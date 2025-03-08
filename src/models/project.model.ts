@@ -6,6 +6,8 @@ interface IProject extends Document {
   description: string;
   image: string;
   timestamp: Date;
+  github: string | null;
+  live: string | null;
 }
 
 const projectSchema: Schema = new Schema({
@@ -14,6 +16,8 @@ const projectSchema: Schema = new Schema({
   descrition: { type: String, required: true },
   image: { type: String, required: true },
   timestamp: { type: Date, required: true},
+  github: { type: String},
+  live: { type: String},
 });
 
 const Project = mongoose.models.Project || mongoose.model<IProject>('Project', projectSchema);
