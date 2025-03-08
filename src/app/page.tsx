@@ -14,7 +14,6 @@ import Projects from "@/components/Projects"
 import SocialLinks from "@/components/SocialLinks"
 import ContactInfo from "@/components/ContactInfo"
 import Bio from "@/components/Bio"
-import ProfileHeader from "@/components/ProfileHeader"
 import HeroSection from "@/components/HeroSection"
 
 export default function Portfolio() {
@@ -35,7 +34,6 @@ export default function Portfolio() {
         {/* Entire content should now stack vertically */}
         <div className="space-y-12 w-[90%] mx-auto">
            <HeroSection/>
-          {/* Profile Header */}
             {/* <ProfileHeader/> */}
             <Bio />
             <SocialLinks />
