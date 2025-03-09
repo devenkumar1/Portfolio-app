@@ -1,13 +1,12 @@
 import { RemotePattern } from './node_modules/next/dist/shared/lib/image-config.d';
 import type { NextConfig } from "next";
 
-const nextConfig: NextConfig = {
+const config: NextConfig = {
   /* config options here */
   eslint: {
     ignoreDuringBuilds: true,
   },
   typescript: {
-
     ignoreBuildErrors: true,
   },
   images: {
@@ -27,9 +26,14 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'res.cloudinary.com',
         pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'cdn.jsdelivr.net',
+        pathname: '/**',
       }
     ]
   }
 };
 
-export default nextConfig;
+export default config;
