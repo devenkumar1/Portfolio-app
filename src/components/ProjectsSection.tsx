@@ -5,7 +5,7 @@ import { ArrowRight, ExternalLink, Github } from "lucide-react";
 import { usePortfolio } from "@/context/PortfolioContext";
 import Link from "next/link";
 
-function Projects() {
+export default function ProjectsSection() {
     const { portfolioData, loading } = usePortfolio();
     
     // Fallback projects data
@@ -105,6 +105,4 @@ function Projects() {
             </div>
         </section>
     );
-}
-
-export default Projects;
+} 

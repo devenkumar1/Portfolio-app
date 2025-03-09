@@ -10,7 +10,7 @@ import NavBar from "@/components/ui/NavBar"
 import ClientsSection from "@/components/ClientsSection"
 import ContactSection from "@/components/ContactSection"
 import TechStack from "@/components/TechStack"
-import Projects from "@/components/Projects"
+import ProjectsSection from "@/components/ProjectsSection"
 import SocialLinks from "@/components/SocialLinks"
 import ContactInfo from "@/components/ContactInfo"
 import Bio from "@/components/Bio"
@@ -40,7 +40,7 @@ export default function Portfolio() {
 
           {/* Projects Section */}
 
-          <Projects />
+          <ProjectsSection />
 
           {/* Stack Section */}
 
