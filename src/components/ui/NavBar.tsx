@@ -5,10 +5,17 @@ import Link from "next/link"
 import { Menu, X, Twitter, Linkedin, Github, Mail, ArrowRight, ExternalLink } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
+import { usePortfolio } from "@/context/PortfolioContext"
 
 function NavBar() {
+    const { portfolioData } = usePortfolio();
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false)
+    
+    // Get name from bio data if available
+    const name = portfolioData?.bio?.name?.split(' ')[0] || "Deven";
+    const initial = name.charAt(0);
+    
     useEffect(() => {
         const handleScroll = () => {
           setScrolled(window.scrollY > 20)
@@ -54,20 +61,16 @@ function NavBar() {
         </div>
       )}
 
-
-
-
-        
-             {/* Desktop Navigation */}
+      {/* Desktop Navigation */}
       <header
         className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${scrolled ? "bg-gray-900/80 backdrop-blur-md py-3" : "py-6"}`}
       >
         <div className="container mx-auto px-6 flex justify-between items-center">
           <div className="flex items-center gap-2">
             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-              <span className="font-bold">D</span>
+              <span className="font-bold">{initial}</span>
             </div>
-            <span className="font-mono font-bold">Deven</span>
+            <span className="font-mono font-bold">{name}</span>
           </div>
           <nav className="hidden lg:flex items-center gap-8">
             <Link href="#about" onClick={(e) => scrollToSection(e, '#about')} className="hover:text-blue-400 transition-colors">

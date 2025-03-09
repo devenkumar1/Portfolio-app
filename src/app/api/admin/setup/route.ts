@@ -1,36 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectDb } from "@/lib/mongodb";
-import Admin from "@/models/admin.model";
+import User from "@/models/admin.model";
 
 // This endpoint is used to create the first admin user
-// It should be disabled in production after the first admin is created
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { email, password, name, setupKey } = body;
+    const { email, password, name } = body;
 
     // Validate required fields
-    if (!email || !password || !name || !setupKey) {
+    if (!email || !password || !name) {
       return NextResponse.json(
         { success: false, error: "Missing required fields" },
         { status: 400 }
       );
     }
 
-    // Check setup key (this should match an environment variable)
-    // This adds an extra layer of security to prevent unauthorized admin creation
-    const validSetupKey = process.env.ADMIN_SETUP_KEY;
-    if (!validSetupKey || setupKey !== validSetupKey) {
-      return NextResponse.json(
-        { success: false, error: "Invalid setup key" },
-        { status: 403 }
-      );
-    }
-
     await connectDb();
     
     // Check if an admin already exists
-    const adminCount = await Admin.countDocuments();
+    const adminCount = await User.countDocuments({ role: "admin" });
     if (adminCount > 0) {
       return NextResponse.json(
         { success: false, error: "Admin user already exists" },
@@ -39,10 +28,11 @@ export async function POST(request: NextRequest) {
     }
     
     // Create the admin user
-    const admin = new Admin({
+    const admin = new User({
       email,
       password, // Will be hashed by the pre-save hook
       name,
+      role: "admin"
     });
 
     await admin.save();

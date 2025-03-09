@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, FormEvent } from "react";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,7 +15,6 @@ export default function AdminSetupPage() {
     email: "",
     password: "",
     confirmPassword: "",
-    setupKey: "",
   });
   
   const [loading, setLoading] = useState(false);
@@ -30,7 +30,7 @@ export default function AdminSetupPage() {
     e.preventDefault();
     
     // Validate form
-    if (!formData.name || !formData.email || !formData.password || !formData.setupKey) {
+    if (!formData.name || !formData.email || !formData.password) {
       setError("All fields are required");
       return;
     }
@@ -59,7 +59,6 @@ export default function AdminSetupPage() {
           name: formData.name,
           email: formData.email,
           password: formData.password,
-          setupKey: formData.setupKey,
         }),
       });
       
@@ -73,7 +72,6 @@ export default function AdminSetupPage() {
           email: "",
           password: "",
           confirmPassword: "",
-          setupKey: "",
         });
         
         // Redirect to login after a delay
@@ -167,23 +165,6 @@ export default function AdminSetupPage() {
               onChange={handleChange}
               required
             />
-          </div>
-          
-          <div>
-            <label htmlFor="setupKey" className="block text-sm font-medium text-gray-700 mb-1">
-              Setup Key
-            </label>
-            <Input
-              id="setupKey"
-              name="setupKey"
-              type="password"
-              value={formData.setupKey}
-              onChange={handleChange}
-              required
-            />
-            <p className="text-xs text-gray-500 mt-1">
-              The setup key is required to create the admin user. It should be set in your environment variables.
-            </p>
           </div>
           
           <Button type="submit" className="w-full mt-6" disabled={loading}>

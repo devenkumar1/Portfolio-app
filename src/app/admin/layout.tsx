@@ -9,7 +9,7 @@ import {
   Code, 
   GraduationCap, 
   Award, 
-  Certificate, 
+  Medal,
   Contact, 
   Home,
   LogOut,
@@ -51,7 +51,7 @@ export default function AdminLayout({
     { name: "Experience", href: "/admin/experience", icon: <Briefcase className="w-5 h-5" /> },
     { name: "Education", href: "/admin/education", icon: <GraduationCap className="w-5 h-5" /> },
     { name: "Achievements", href: "/admin/achievements", icon: <Award className="w-5 h-5" /> },
-    { name: "Certificates", href: "/admin/certificates", icon: <Certificate className="w-5 h-5" /> },
+    { name: "Certificates", href: "/admin/certificates", icon: <Medal className="w-5 h-5" /> },
     { name: "Contact", href: "/admin/contact", icon: <Contact className="w-5 h-5" /> },
   ];
   

@@ -8,7 +8,7 @@ import {
   Code, 
   GraduationCap, 
   Award, 
-  Certificate, 
+  Medal,
   Contact,
   RefreshCw
 } from "lucide-react";
@@ -71,7 +71,7 @@ export default function AdminDashboard() {
     { 
       title: "Certificates", 
       href: "/admin/certificates", 
-      icon: <Certificate className="w-6 h-6" />,
+      icon: <Medal className="w-6 h-6" />,
       count: portfolioData?.certificates?.length || 0,
       color: "bg-pink-500"
     },
