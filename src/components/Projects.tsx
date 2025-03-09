@@ -31,7 +31,13 @@ function Projects() {
     ];
     
     // Use projects data from API if available, otherwise use fallback
-    const projects = portfolioData?.projects?.length ? portfolioData.projects : fallbackProjects;
+    const allProjects = portfolioData?.projects?.length ? portfolioData.projects : fallbackProjects;
+    
+    // Get only the latest 3 projects for the home page
+    const featuredProjects = allProjects.slice(0, 3);
+    
+    // Check if there are more projects than what we're showing
+    const hasMoreProjects = allProjects.length > 3;
     
     if (loading) {
         return (
@@ -53,15 +59,17 @@ function Projects() {
         <section id="projects" className="space-y-8">
             <div className="flex justify-between items-center">
                 <h2 className="text-3xl font-mono font-bold">Featured Projects</h2>
-                <Link href="/projects">
-                    <Button variant="ghost" className="group">
-                        View All
-                        <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                    </Button>
-                </Link>
+                {hasMoreProjects && (
+                    <Link href="/all-projects">
+                        <Button variant="ghost" className="group">
+                            View All
+                            <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                        </Button>
+                    </Link>
+                )}
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {projects.map((project: any) => (
+                {featuredProjects.map((project: any) => (
                     <div key={project._id || project.id} className="group relative aspect-[4/5] rounded-xl overflow-hidden cursor-pointer">
                         <Image
                             src={project.image || "/placeholder.svg"}

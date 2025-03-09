@@ -2,13 +2,13 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import devenImage from "@/assets/deven-picture.png"
-import {Button} from '@/components/ui/button';
+import { Button } from '@/components/ui/button';
 import { ArrowRight } from "lucide-react";
 import { usePortfolio } from "@/context/PortfolioContext";
 
 function HeroSection() {
     const { portfolioData, loading } = usePortfolio();
-    
+
     const textArray = [
         "A web solution provider",
         "A problem solver.",
@@ -38,7 +38,6 @@ function HeroSection() {
         return () => clearTimeout(timeout);
     }, [text, isDeleting, charIndex, index]);
 
-    // Use bio data if available, otherwise use fallback content
     const name = portfolioData?.bio?.name || "Deven Kumar";
     const title = portfolioData?.bio?.title || "Full Stack Developer";
     const profileImage = portfolioData?.bio?.image || devenImage;
@@ -90,13 +89,13 @@ function HeroSection() {
                         <span className="text-white font-bold animate-blink">|</span>
                     </p>
 
-                     <Button 
+                    <Button
                         className="rounded-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transition-all duration-300 mt-4"
                         onClick={handleResumeDownload}
                         disabled={!resumeUrl}
-                     >
+                    >
                         Download Resume <ArrowRight className="ml-2 w-4 h-4" />
-                      </Button>
+                    </Button>
                 </div>
 
                 {/* Right Section - Profile Image  */}
@@ -108,11 +107,7 @@ function HeroSection() {
                             alt={name}
                             width={400}
                             height={400}
-                            className="rounded-lg shadow-lg transition-all duration-300 group-hover:scale-105 mt-3 md:w-[400px] md:h-[400px] object-cover"
-                            style={{
-                                maskImage: 'radial-gradient(circle, rgba(0, 0, 0, 1) 50%, rgba(0, 0, 0, 0) 100%)',
-                                WebkitMaskImage: 'radial-gradient(circle, rgba(0, 0, 0, 1) 50%, rgba(0, 0, 0, 0) 100%)' // For Safari
-                            }}
+                            className="rounded-lg shadow-lg transition-all duration-300 group-hover:scale-105 group-hover:grayscale-40 grayscale mt-3 md:w-[400px] md:h-[400px] object-cover"
                         />
                     </div>
                 </div>
