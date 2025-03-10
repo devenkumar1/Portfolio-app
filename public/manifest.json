@@ -1,6 +1,6 @@
 {
-  "name": "Portfolio App",
-  "short_name": "Portfolio",
+  "name": "Deven's Portfolio",
+  "short_name": "DK portfolio",
   "description": "A professional portfolio showcasing projects and skills",
   "start_url": "/",
   "display": "standalone",

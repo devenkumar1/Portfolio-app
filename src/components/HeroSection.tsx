@@ -33,7 +33,7 @@ function HeroSection() {
                     setIndex((index + 1) % textArray.length);
                 }
             }
-        }, isDeleting ? 50 : 100); // Typing speed
+        }, isDeleting ? 50 : 100);
 
         return () => clearTimeout(timeout);
     }, [text, isDeleting, charIndex, index]);
