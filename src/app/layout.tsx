@@ -1,4 +1,4 @@
-import type { Metadata, Viewport } from "next";
+import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import NavBar from "@/components/ui/NavBar";
@@ -19,33 +19,26 @@ const geistMono = Geist_Mono({
 
 const inter = Inter({ subsets: ['latin'] });
 
-// Metadata export for page (title, description, etc.)
 export const metadata: Metadata = {
-  title: "Deven's Portfolio",
+  title: "Portfolio App",
   description: "A professional portfolio showcasing projects and skills",
   manifest: "/manifest.json",
+  themeColor: "#111827",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Portfolio App",
+  },
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 1,
+  },
   icons: {
     icon: "/icons/icon-192x192.png",
     shortcut: "/icons/icon-192x192.png",
     apple: "/icons/icon-192x192.png",
   },
-};
-
-// Viewport export for screen scaling (separate from metadata)
-export const viewport: Viewport = {
-  width: "device-width",
-  initialScale: 1,
-  maximumScale: 1,
-};
-
-// Theme color for the browser toolbar (separate from metadata)
-export const themeColor = "#111827";
-
-// Apple web app settings (part of the metadata but separate from viewport/themeColor)
-export const appleWebApp = {
-  capable: true,
-  statusBarStyle: "default",
-  title: "Portfolio App",
 };
 
 export default function RootLayout({
@@ -58,7 +51,7 @@ export default function RootLayout({
       <body>
         <SessionProvider>
           <PortfolioProvider>
-            <NavBar />
+            <NavBar/>
             {children}
           </PortfolioProvider>
         </SessionProvider>
