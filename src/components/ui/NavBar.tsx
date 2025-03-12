@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { Menu, X, Twitter, Linkedin, Github, Mail, ArrowRight, ExternalLink } from "lucide-react"
+import { Menu, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
 import { usePortfolio } from "@/context/PortfolioContext"
@@ -56,6 +56,9 @@ function NavBar() {
               <Link href="#contact" onClick={(e) => scrollToSection(e, '#contact')}>
                 Contact
               </Link>
+              <Link href="/github" className="hover:text-blue-400 transition-colors">
+                GitHub
+              </Link>
             </div>
           </div>
         </div>
@@ -68,9 +71,9 @@ function NavBar() {
         <div className="container mx-auto px-6 flex justify-between items-center">
           <div className="flex items-center gap-2">
             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-              <span className="font-bold">{initial}</span>
+              <span className="font-bold"><Link href="/">{initial}</Link></span>
             </div>
-            <span className="font-mono font-bold">{name}</span>
+            <span className="font-mono font-bold"><Link href="/">{name}</Link></span>
           </div>
           <nav className="hidden lg:flex items-center gap-8">
             <Link href="#about" onClick={(e) => scrollToSection(e, '#about')} className="hover:text-blue-400 transition-colors">
@@ -84,6 +87,9 @@ function NavBar() {
             </Link>
             <Link href="#contact" onClick={(e) => scrollToSection(e, '#contact')} className="hover:text-blue-400 transition-colors">
               Contact
+            </Link>
+            <Link href="/github" className="hover:text-blue-400 transition-colors">
+              GitHub details
             </Link>
           </nav>
           <Button variant="ghost" size="icon" className="lg:hidden" onClick={() => setMobileMenuOpen(true)}>
