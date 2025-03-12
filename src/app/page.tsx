@@ -43,14 +43,14 @@ export default function Portfolio() {
             {/* Education Timeline */}
             <EducationTimeline />
 
+          {/* Stack Section */}
+          <TechStack />
           {/* Projects Section */}
           <ProjectsSection />
 
           {/* Experience Timeline */}
           <ExperienceTimeline />
 
-          {/* Stack Section */}
-          <TechStack />
 
           {/* Contact Section */}
           <ContactSection />
