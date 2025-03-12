@@ -15,6 +15,8 @@ import SocialLinks from "@/components/SocialLinks"
 import ContactInfo from "@/components/ContactInfo"
 import Bio from "@/components/Bio"
 import HeroSection from "@/components/HeroSection"
+import EducationTimeline from "@/components/EducationTimeline"
+import ExperienceTimeline from "@/components/ExperienceTimeline"
 
 export default function Portfolio() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -37,26 +39,26 @@ export default function Portfolio() {
             {/* <ProfileHeader/> */}
             <Bio />
             <SocialLinks />
+            
+            {/* Education Timeline */}
+            <EducationTimeline />
 
           {/* Projects Section */}
-
           <ProjectsSection />
 
-          {/* Stack Section */}
+          {/* Experience Timeline */}
+          <ExperienceTimeline />
 
+          {/* Stack Section */}
           <TechStack />
 
-
           {/* Contact Section */}
-
           <ContactSection />
-
 
           {/* Happy Clients Section */}
           <ClientsSection />
             {/* Contact Info */}
             <ContactInfo />
-
         </div>
       </div>
     </div>
