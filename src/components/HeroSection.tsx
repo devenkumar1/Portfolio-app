@@ -1,13 +1,16 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import devenImage from "@/assets/deven-picture.png"
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from "lucide-react";
 import { usePortfolio } from "@/context/PortfolioContext";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 
 function HeroSection() {
     const { portfolioData, loading } = usePortfolio();
+    const nameRef = useRef<HTMLDivElement>(null)
 
     const textArray = [
         "A web solution provider",
@@ -18,6 +21,50 @@ function HeroSection() {
     const [index, setIndex] = useState(0);
     const [charIndex, setCharIndex] = useState(0);
     const [isDeleting, setIsDeleting] = useState(false);
+
+    const tl = gsap.timeline()
+    const arrowRef = useRef(null)
+    const imgRef = useRef(null)
+
+    useEffect(() => {
+
+        if (nameRef.current && !loading) {
+            tl.from(nameRef.current.querySelectorAll('h3'), {
+                scale: 0,
+                x: -40,
+                opacity: 0,
+                duration: 0.2,
+                delay: 0.2,
+            });
+            tl.from(nameRef.current.querySelectorAll("h1"), {
+                scale: 0,
+                opacity: 0,
+                x: 40,
+                duration: 1,
+                stagger: 0.3,
+                ease: "power1.inOut",
+            });
+
+            tl.from(imgRef.current,{
+                scale: 0,
+                opacity:0,
+                duration: 0.5,
+                y:20,
+                ease: "power1.in",
+
+            })
+
+            gsap.from(arrowRef.current, {
+                scale: 0,
+                opacity: 0,
+                duration: 1,
+                delay: 1,
+                repeat: -1,
+                yoyo: true
+            })
+
+        }
+    }, [loading]);
 
     useEffect(() => {
         const timeout = setTimeout(() => {
@@ -73,7 +120,7 @@ function HeroSection() {
             <div className="max-w-6xl w-full flex flex-col-reverse gap-5  md:flex-row md:justify-around items-center">
 
                 {/* Left Section - Text Content */}
-                <div className="text-center md:text-left w-full md:w-1/2">
+                <div ref={nameRef} className="text-center md:text-left w-full md:w-1/2">
                     <h3 className="text-lg font-medium text-gray-300">Hi there, I'm</h3>
                     <h1 className=" text-3xl  md:text-5xl font-extrabold text-white mt-2">
                         {name},
@@ -94,20 +141,24 @@ function HeroSection() {
                         onClick={handleResumeDownload}
                         disabled={!resumeUrl}
                     >
-                        Download Resume <ArrowRight className="ml-2 w-4 h-4" />
+                        Download Resume <ArrowRight ref={arrowRef} className="ml-2 w-4 h-4" />
                     </Button>
                 </div>
 
                 {/* Right Section - Profile Image  */}
                 <div className="mt-8 md:mt-0 md:w-1/2 flex justify-center relative">
-                    <div className="relative group">
+                    <div ref={imgRef} className="relative group">
                         {/* Profile Image */}
                         <Image
+                        
                             src={typeof profileImage === 'string' ? profileImage : devenImage}
                             alt={name}
                             width={400}
                             height={400}
                             className="rounded-lg shadow-lg transition-all duration-300 group-hover:scale-105 group-hover:grayscale-40 grayscale mt-3 md:w-[400px] md:h-[400px] object-cover"
+                            style={{
+                                boxShadow: '0 0 24px 6px rgba(255, 215, 0, 0.5)' 
+                            }}
                         />
                     </div>
                 </div>
