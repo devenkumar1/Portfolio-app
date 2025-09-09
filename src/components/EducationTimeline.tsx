@@ -2,9 +2,47 @@
 
 import { usePortfolio } from "@/context/PortfolioContext";
 import { GraduationCap, Calendar } from "lucide-react";
+import { useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 
 export default function EducationTimeline() {
   const { portfolioData, loading } = usePortfolio();
+
+    const timelineRef = useRef<HTMLDivElement>(null);
+      const educations = [...(portfolioData?.educations || [])].sort((a, b) => {
+    const startA = parseInt(a.start);
+    const startB = parseInt(b.start);
+    return startB - startA;
+  });
+
+      useGSAP(() => {
+    if (loading || !timelineRef.current || educations.length === 0) return;
+    gsap.registerPlugin(ScrollTrigger);
+    const items = timelineRef.current.querySelectorAll(".education-item");
+    items.forEach((item) => {
+      gsap.fromTo(
+        item,
+        { scale: 0.7, opacity: 0, y: 50 },
+        {
+          scale: 1,
+          opacity: 1,
+          y: 0,
+          duration: 0.7,
+          ease: "elastic.out(1, 0.6)",
+          scrollTrigger: {
+            trigger: item,
+            start: "top 80%",
+            toggleActions: "restart none none none",
+          },
+        }
+      );
+    });
+    return () => {
+      ScrollTrigger.getAll().forEach((st) => st.kill());
+    };
+  }, [educations, loading]);
 
   if (loading) {
     return (
@@ -27,11 +65,7 @@ export default function EducationTimeline() {
   }
 
   // Sort educations in descending order based on start year
-  const educations = [...(portfolioData?.educations || [])].sort((a, b) => {
-    const startA = parseInt(a.start);
-    const startB = parseInt(b.start);
-    return startB - startA;
-  });
+
 
   return (
     <div className="space-y-8" id="education">

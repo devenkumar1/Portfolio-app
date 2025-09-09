@@ -4,9 +4,14 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, ExternalLink, Github } from "lucide-react";
 import { usePortfolio } from "@/context/PortfolioContext";
 import Link from "next/link";
+import { useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 export default function ProjectsSection() {
     const { portfolioData, loading } = usePortfolio();
+     const projectsRef = useRef<HTMLDivElement>(null);
     
     // Fallback projects data
     const fallbackProjects = [
@@ -38,10 +43,35 @@ export default function ProjectsSection() {
     
     // Check if there are more projects than what we're showing
     const hasMoreProjects = allProjects.length > 3;
+        useGSAP(() => {
+        if (loading || !projectsRef.current) return;
+        gsap.registerPlugin(ScrollTrigger);
+        const cards = projectsRef.current.querySelectorAll('.project-card');
+        gsap.fromTo(
+            cards,
+            { scale: 0.7, opacity: 0, y: 50 },
+            {
+                scale: 1,
+                opacity: 1,
+                y: 0,
+                duration: 0.7,
+                ease: "elastic.out(1, 0.6)",
+                stagger: 0.18,
+                scrollTrigger: {
+                    trigger: projectsRef.current,
+                    start: "top 80%",
+                    toggleActions: "restart none none none",
+                },
+            }
+        );
+        return () => {
+            ScrollTrigger.getAll().forEach((st) => st.kill());
+        };
+    }, [featuredProjects, loading]);
     
     if (loading) {
         return (
-            <section id="projects" className="space-y-8">
+            <section id="projects" ref={projectsRef} className="space-y-8">
                 <div className="flex justify-between items-center">
                     <h2 className="text-3xl font-mono font-bold">Featured Projects</h2>
                     <div className="w-24 h-10 bg-gray-700 rounded animate-pulse"></div>

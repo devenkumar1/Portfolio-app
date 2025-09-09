@@ -1,9 +1,39 @@
 "use client";
 
 import { usePortfolio } from "@/context/PortfolioContext";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useRef } from "react";
+import gsap from "gsap";
 
 const Bio = () => {
   const { portfolioData, loading } = usePortfolio();
+    const bioSectionRef = useRef<HTMLDivElement>(null);
+  gsap.registerPlugin(ScrollTrigger);
+  useGSAP(() => {
+    if (loading || !bioSectionRef.current) return;
+    gsap.fromTo(
+      bioSectionRef.current.querySelectorAll('p'),
+      { scale: 0, opacity: 0, y: 50 },
+      {
+        scale: 1,
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        ease: "elastic.out(1, 0.6)",
+        stagger:0.28,
+        scrollTrigger: {
+          trigger: bioSectionRef.current,
+          start: "top 80%",
+          toggleActions: "restart none none none",
+          markers: false,
+        },
+      }
+    );
+    return () => {
+      ScrollTrigger.getAll().forEach((st) => st.kill());
+    };
+  }, [loading]);
   
   if (loading) {
     return (

@@ -3,9 +3,13 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { usePortfolio } from "@/context/PortfolioContext";
-
+import { useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 function TechStack() {
     const { portfolioData, loading } = usePortfolio();
+    const stackRef = useRef<HTMLDivElement>(null);
     
     // Fallback tech stack data
     const fallbackTechStack = [
@@ -22,6 +26,32 @@ function TechStack() {
     // Use skills data from API if available, otherwise use fallback
     const techStack = portfolioData?.skills?.length ? portfolioData.skills : fallbackTechStack;
     
+    useGSAP(() => {
+        if (loading || !stackRef.current) return;
+        gsap.registerPlugin(ScrollTrigger);
+        const icons = stackRef.current.querySelectorAll('.tech-icon');
+        gsap.fromTo(
+            icons,
+            { y: -100, opacity: 0, scale: 0.7 },
+            {
+                y: 0,
+                opacity: 1,
+                scale: 1,
+                duration: 0.7,
+                ease: "bounce.out",
+                stagger: 0.15,
+                scrollTrigger: {
+                    trigger: stackRef.current,
+                    start: "top 80%",
+                    toggleActions: "restart none none none",
+                },
+            }
+        );
+        return () => {
+            ScrollTrigger.getAll().forEach((st) => st.kill());
+        };
+    }, [techStack, loading]);
+
     if (loading) {
         return (
             <section id="stack" className="rounded-xl p-8 bg-gradient-to-br from-blue-600/20 to-purple-600/20 border border-blue-500/20 backdrop-blur-sm">
@@ -41,8 +71,10 @@ function TechStack() {
         );
     }
 
+
+
     return (
-        <section id="stack" className="rounded-xl p-8 bg-gradient-to-br from-blue-600/20 to-purple-600/20 border border-blue-500/20 backdrop-blur-sm">
+        <section id="stack" ref={stackRef} className="rounded-xl p-8 bg-gradient-to-br from-blue-600/20 to-purple-600/20 border border-blue-500/20 backdrop-blur-sm">
             <div className="flex justify-between items-center mb-8">
                 <h2 className="text-3xl font-mono font-bold">My Tech Stack</h2>
                 <Button variant="ghost" className="text-white group">

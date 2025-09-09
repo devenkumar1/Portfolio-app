@@ -2,9 +2,46 @@
 
 import { usePortfolio } from "@/context/PortfolioContext";
 import { Briefcase, Calendar } from "lucide-react";
-
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useRef } from "react";
 export default function ExperienceTimeline() {
   const { portfolioData, loading } = usePortfolio();
+    const timelineRef = useRef<HTMLDivElement>(null);
+
+  // Sort experiences in descending order based on start year
+  const experiences = [...(portfolioData?.experiences || [])].sort((a, b) => {
+    const startA = parseInt(a.start);
+    const startB = parseInt(b.start);
+    return startB - startA;
+  });
+
+  useGSAP(() => {
+    if (loading || !timelineRef.current || experiences.length === 0) return;
+    gsap.registerPlugin(ScrollTrigger);
+    const items = timelineRef.current.querySelectorAll('.experience-item');
+    gsap.fromTo(
+      items,
+      { opacity: 0, x: -80, rotateY: 30 },
+      {
+        opacity: 1,
+        x: 0,
+        rotateY: 0,
+        duration: 0.8,
+        ease: "power3.out",
+        stagger: 0.18,
+        scrollTrigger: {
+          trigger: timelineRef.current,
+          start: "top 80%",
+          toggleActions: "restart none none none",
+        },
+      }
+    );
+    return () => {
+      ScrollTrigger.getAll().forEach((st) => st.kill());
+    };
+  }, [experiences, loading]);
 
   if (loading) {
     return (
@@ -26,15 +63,8 @@ export default function ExperienceTimeline() {
     );
   }
 
-  // Sort experiences in descending order based on start year
-  const experiences = [...(portfolioData?.experiences || [])].sort((a, b) => {
-    const startA = parseInt(a.start);
-    const startB = parseInt(b.start);
-    return startB - startA;
-  });
-
   return (
-    <div className="space-y-8" id="experience">
+    <div className="space-y-8" id="experience" ref={timelineRef}>
       <h2 className="text-3xl font-bold">Work Experience</h2>
       
       {experiences.length === 0 ? (
