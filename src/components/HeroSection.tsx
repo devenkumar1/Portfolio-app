@@ -153,11 +153,16 @@ function HeroSection() {
                         
                             src={typeof profileImage === 'string' ? profileImage : devenImage}
                             alt={name}
-                            width={400}
-                            height={400}
-                            className="rounded-lg shadow-lg transition-all duration-300 group-hover:scale-105 group-hover:grayscale-40 grayscale mt-3 md:w-[400px] md:h-[400px] object-cover"
+                            width={500}
+                            height={500}
+                            loading="lazy"
+                            className="rounded-lg shadow-lg transition-all duration-300 group-hover:scale-105  mt-3 md:w-[500px] md:h-[500px] object-cover"
                             style={{
-                                boxShadow: '0 0 24px 6px rgba(255, 215, 0, 0.5)' 
+                                 boxShadow: `
+        0 4px 14px 0px rgba(0, 0, 0, 0.25),      /* soft dark shadow for depth */
+        0 0 32px 8px #0077b688,                    /* neon blue outer glow */
+        0 0 8px 2px #0077b688                      /* inner blue accent */
+    `
                             }}
                         />
                     </div>
