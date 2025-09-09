@@ -9,11 +9,13 @@ import gsap from "gsap";
 const Bio = () => {
   const { portfolioData, loading } = usePortfolio();
     const bioSectionRef = useRef<HTMLDivElement>(null);
-  gsap.registerPlugin(ScrollTrigger);
   useGSAP(() => {
     if (loading || !bioSectionRef.current) return;
+    gsap.registerPlugin(ScrollTrigger);
+    const paragraphs = bioSectionRef.current.querySelectorAll('p');
+    if (paragraphs.length === 0) return;
     gsap.fromTo(
-      bioSectionRef.current.querySelectorAll('p'),
+      paragraphs,
       { scale: 0, opacity: 0, y: 50 },
       {
         scale: 1,
@@ -51,7 +53,7 @@ const Bio = () => {
     "Full Stack Web Developer specializing in building exceptional digital experiences. With expertise in Next JS, React, Node.js, and modern web technologies, I craft scalable solutions that combine clean code with intuitive design.";
 
   return (
-    <div className="space-y-4 font-inter">
+    <div ref={bioSectionRef} className="space-y-4 font-inter">
       <h1 className="text-3xl font-bold">About Me</h1>
       <p className="text-gray-300 text-lg leading-relaxed tracking-wide">
         {bioDescription}

@@ -9,18 +9,19 @@ import { useGSAP } from "@gsap/react";
 
 export default function EducationTimeline() {
   const { portfolioData, loading } = usePortfolio();
-
-    const timelineRef = useRef<HTMLDivElement>(null);
-      const educations = [...(portfolioData?.educations || [])].sort((a, b) => {
+  const timelineRef = useRef<HTMLDivElement>(null);
+  
+  const educations = [...(portfolioData?.educations || [])].sort((a, b) => {
     const startA = parseInt(a.start);
     const startB = parseInt(b.start);
     return startB - startA;
   });
 
-      useGSAP(() => {
+  useGSAP(() => {
     if (loading || !timelineRef.current || educations.length === 0) return;
     gsap.registerPlugin(ScrollTrigger);
     const items = timelineRef.current.querySelectorAll(".education-item");
+    if (items.length === 0) return; // Fixed: Check if items exist before animating
     items.forEach((item) => {
       gsap.fromTo(
         item,
@@ -64,11 +65,8 @@ export default function EducationTimeline() {
     );
   }
 
-  // Sort educations in descending order based on start year
-
-
   return (
-    <div className="space-y-8" id="education">
+    <div ref={timelineRef} className="space-y-8" id="education">
       <h2 className="text-3xl font-bold">Education</h2>
       
       {educations.length === 0 ? (
@@ -79,7 +77,7 @@ export default function EducationTimeline() {
           <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-blue-500 to-purple-600"></div>
           
           {educations.map((education: any, index: number) => (
-            <div key={education._id} className="relative flex gap-6">
+            <div key={education._id} className="education-item relative flex gap-6">
               {/* Timeline dot */}
               <div className="absolute left-0 w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg">
                 <GraduationCap className="w-6 h-6 text-white" />

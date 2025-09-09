@@ -11,7 +11,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 export default function ProjectsSection() {
     const { portfolioData, loading } = usePortfolio();
-     const projectsRef = useRef<HTMLDivElement>(null);
+    const projectsRef = useRef<HTMLDivElement>(null);
     
     // Fallback projects data
     const fallbackProjects = [
@@ -43,10 +43,12 @@ export default function ProjectsSection() {
     
     // Check if there are more projects than what we're showing
     const hasMoreProjects = allProjects.length > 3;
-        useGSAP(() => {
+    
+    useGSAP(() => {
         if (loading || !projectsRef.current) return;
         gsap.registerPlugin(ScrollTrigger);
         const cards = projectsRef.current.querySelectorAll('.project-card');
+        if (cards.length === 0) return; // Fixed: Check if cards exist before animating
         gsap.fromTo(
             cards,
             { scale: 0.7, opacity: 0, y: 50 },
@@ -86,7 +88,7 @@ export default function ProjectsSection() {
     }
     
     return (
-        <section id="projects" className="space-y-8">
+        <section id="projects" ref={projectsRef} className="space-y-8">
             <div className="flex justify-between items-center">
                 <h2 className="text-3xl font-mono font-bold">Featured Projects</h2>
                 {hasMoreProjects && (
@@ -100,7 +102,7 @@ export default function ProjectsSection() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {featuredProjects.map((project: any) => (
-                    <div key={project._id || project.id} className="group relative aspect-[4/5] rounded-xl overflow-hidden cursor-pointer">
+                    <div key={project._id || project.id} className="project-card group relative aspect-[4/5] rounded-xl overflow-hidden cursor-pointer">
                         <Image
                             src={project.image || "/placeholder.svg"}
                             alt={project.title}

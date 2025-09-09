@@ -30,6 +30,7 @@ function TechStack() {
         if (loading || !stackRef.current) return;
         gsap.registerPlugin(ScrollTrigger);
         const icons = stackRef.current.querySelectorAll('.tech-icon');
+        if (icons.length === 0) return; // Check if icons exist before animating
         gsap.fromTo(
             icons,
             { y: -100, opacity: 0, scale: 0.7 },
@@ -83,7 +84,7 @@ function TechStack() {
             </div>
             <div className="flex flex-wrap gap-6 justify-center">
                 {techStack.map((tech: any) => (
-                    <div key={tech._id || tech.name} className="flex flex-col items-center gap-2 group">
+                    <div key={tech._id || tech.name} className="tech-icon flex flex-col items-center gap-2 group">
                         <div className="w-16 h-16 bg-white/10 rounded-xl flex items-center justify-center p-3 transition-all duration-300 group-hover:bg-white/20 group-hover:shadow-lg group-hover:shadow-blue-500/20">
                             <Image src={tech.icon || "/placeholder.svg"} alt={tech.name} width={40} height={40} />
                         </div>

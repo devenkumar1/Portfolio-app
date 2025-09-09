@@ -23,16 +23,10 @@ export const metadata: Metadata = {
   title: "Portfolio App",
   description: "A professional portfolio showcasing projects and skills",
   manifest: "/manifest.json",
-  themeColor: "#111827",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
     title: "Portfolio App",
-  },
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 1,
   },
   icons: {
     icon: "/icons/icon-192x192.png",

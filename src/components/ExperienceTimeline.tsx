@@ -21,6 +21,7 @@ export default function ExperienceTimeline() {
     if (loading || !timelineRef.current || experiences.length === 0) return;
     gsap.registerPlugin(ScrollTrigger);
     const items = timelineRef.current.querySelectorAll('.experience-item');
+    if (items.length === 0) return;
     gsap.fromTo(
       items,
       { opacity: 0, x: -80, rotateY: 30 },
@@ -75,7 +76,7 @@ export default function ExperienceTimeline() {
           <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-blue-500 to-purple-600"></div>
           
           {experiences.map((experience: any, index: number) => (
-            <div key={experience._id} className="relative flex gap-6">
+            <div key={experience._id} className="experience-item relative flex gap-6">
               {/* Timeline dot */}
               <div className="absolute left-0 w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg">
                 <Briefcase className="w-6 h-6 text-white" />
