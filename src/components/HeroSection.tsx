@@ -122,11 +122,11 @@ function HeroSection() {
                 {/* Left Section - Text Content */}
                 <div ref={nameRef} className="text-center md:text-left w-full md:w-1/2">
                     <h3 className="text-lg font-medium text-gray-300">Hi there, I'm</h3>
-                    <h1 className=" text-3xl  md:text-5xl font-extrabold text-white mt-2">
+                    <h1 className=" text-3xl  tracking-tight md:text-5xl font-extrabold text-white mt-2">
                         {name},
                     </h1>
                     <br />
-                    <h1 className=" text-2xl md:text-4xl font-bold text-blue-400">
+                    <h1 className=" text-2xl tracking-tight md:text-4xl font-bold text-blue-400">
                         {title}.
                     </h1>
 
@@ -156,7 +156,7 @@ function HeroSection() {
                             width={500}
                             height={500}
                             loading="lazy"
-                            className="rounded-lg shadow-lg transition-all duration-300 group-hover:scale-105  mt-3 md:w-[500px] md:h-[500px] object-cover"
+                            className="rounded-lg shadow-lg transition-all duration-300  mb-8 md:mb-0 group-hover:scale-105 h-60  md:mt-3 md:w-[500px] md:h-[500px] object-cover"
                             style={{
                                  boxShadow: `
         0 4px 14px 0px rgba(0, 0, 0, 0.25),      /* soft dark shadow for depth */
