@@ -7,8 +7,7 @@ import ContactForm from './ContactForm';
 
 export default function ContactSection() {
     const { portfolioData } = usePortfolio();
-    
-    // Get email from portfolio data or use a fallback
+
     const email = portfolioData?.contact?.email || 'contact@example.com';
     
     const handleContactClick = () => {

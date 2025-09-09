@@ -45,11 +45,11 @@ function HeroSection() {
                 ease: "power1.inOut",
             });
 
-            tl.from(imgRef.current,{
+            tl.from(imgRef.current, {
                 scale: 0,
-                opacity:0,
+                opacity: 0,
                 duration: 0.5,
-                y:20,
+                y: 20,
                 ease: "power1.in",
 
             })
@@ -150,7 +150,7 @@ function HeroSection() {
                     <div ref={imgRef} className="relative group">
                         {/* Profile Image */}
                         <Image
-                        
+
                             src={typeof profileImage === 'string' ? profileImage : devenImage}
                             alt={name}
                             width={500}
@@ -158,7 +158,7 @@ function HeroSection() {
                             loading="lazy"
                             className="rounded-lg shadow-lg transition-all duration-300  mb-8 md:mb-0 group-hover:scale-105 h-60  md:mt-3 md:w-[500px] md:h-[500px] object-cover"
                             style={{
-                                 boxShadow: `
+                                boxShadow: `
         0 4px 14px 0px rgba(0, 0, 0, 0.25),      /* soft dark shadow for depth */
         0 0 32px 8px #0077b688,                    /* neon blue outer glow */
         0 0 8px 2px #0077b688                      /* inner blue accent */

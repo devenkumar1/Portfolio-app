@@ -5,10 +5,9 @@ import { usePortfolio } from "@/context/PortfolioContext";
 function ContactInfo() {
   const { portfolioData, loading } = usePortfolio();
   
-  // Use contact data if available, otherwise use fallback
-  const email = portfolioData?.contact?.email || "tony@example.com";
-  const phone = portfolioData?.contact?.phone || "+1 (234) 567-890";
-  const address = portfolioData?.contact?.address || "";
+  const email = portfolioData?.contact?.email || "devenkumar540@gmail.com";
+  const phone = portfolioData?.contact?.phone || "+91 9693838648";
+  const address = portfolioData?.contact?.address || "Arrah,Bihar";
   
   if (loading) {
     return (

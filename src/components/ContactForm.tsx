@@ -10,7 +10,9 @@ export default function ContactForm() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    title:"",
     message: "",
+
   });
   
   const [loading, setLoading] = useState(false);
@@ -44,26 +46,34 @@ export default function ContactForm() {
       setLoading(true);
       setError(null);
       
-      const response = await fetch("/api/send-email", {
-        method: "POST",
+      // Send data to API route
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          title: formData.title,
+          message: formData.message,
+        }),
       });
-      
+
       const data = await response.json();
-      
-      if (data.success) {
-        setSuccess(true);
-        setFormData({
-          name: "",
-          email: "",
-          message: "",
-        });
-      } else {
-        setError(data.error || "Failed to send message");
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to send message');
       }
+
+      setSuccess(true);
+      setFormData({
+        name: "",
+        email: "",
+        title: "",
+        message: "",
+      });
+
     } catch (err) {
       console.error("Error sending message:", err);
       setError("An error occurred while sending your message");
@@ -110,7 +120,8 @@ export default function ContactForm() {
           
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1">
-              Email
+            
+            Email
             </label>
             <Input
               id="email"
@@ -118,12 +129,29 @@ export default function ContactForm() {
               type="email"
               value={formData.email}
               onChange={handleChange}
-              placeholder="your@email.com"
+              placeholder="enter your email"
               className="bg-gray-700/50 border-gray-600"
               required
             />
           </div>
           
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1">
+            
+            title
+            </label>
+            <Input
+              id="title"
+              name="title"
+              type="string"
+              value={formData.title}
+              onChange={handleChange}
+              placeholder="enter a suitable title"
+              className="bg-gray-700/50 border-gray-600"
+              required
+            />
+          </div>
+
           <div>
             <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-1">
               Message
@@ -143,6 +171,7 @@ export default function ContactForm() {
             type="submit" 
             className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
             disabled={loading}
+            
           >
             {loading ? (
               <>

@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import nodemailer from "nodemailer";
+import { sendMailToDeveloper } from "@/lib/resend";
 
 export async function POST(request: NextRequest) {
   try {
-    const { name, email, message } = await request.json();
+    const { name, email, title, message } = await request.json();
     
     // Validate input
     if (!name || !email || !message) {
@@ -13,38 +13,17 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    // Create a transporter
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASSWORD,
-      },
-    });
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return NextResponse.json(
+        { success: false, error: "Please enter a valid email address" },
+        { status: 400 }
+      );
+    }
     
-    // Email content
-    const mailOptions = {
-      from: process.env.EMAIL_USER,
-      to: process.env.EMAIL_RECIPIENT || process.env.EMAIL_USER,
-      subject: `Portfolio Contact: Message from ${name}`,
-      text: `
-        Name: ${name}
-        Email: ${email}
-        
-        Message:
-        ${message}
-      `,
-      html: `
-        <h3>New message from your portfolio website</h3>
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Message:</strong></p>
-        <p>${message.replace(/\n/g, '<br>')}</p>
-      `,
-    };
-    
-    // Send email
-    await transporter.sendMail(mailOptions);
+    // Send email using Resend
+    await sendMailToDeveloper(name, email, title || `Portfolio Contact: Message from ${name}`, message);
     
     return NextResponse.json({
       success: true,
@@ -65,4 +44,4 @@ export async function GET() {
     { message: "Email endpoint ready" },
     { status: 200 }
   );
-} 
+}
