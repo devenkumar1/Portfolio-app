@@ -20,13 +20,13 @@ const geistMono = Geist_Mono({
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: "Portfolio App",
-  description: "A professional portfolio showcasing projects and skills",
+  title: " Deven's Portfolio",
+  description: "Deven's professional portfolio showcasing projects and skills",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "Portfolio App",
+    title: "Deven's portfolio",
   },
   icons: {
     icon: "/icons/icon-192x192.png",
