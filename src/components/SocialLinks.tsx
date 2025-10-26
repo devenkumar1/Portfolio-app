@@ -1,30 +1,26 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { usePortfolio } from "@/context/PortfolioContext";
 import { FaTwitter, FaLinkedinIn, FaGithub, FaInstagram } from "react-icons/fa";
 
-function SocialLinks() {
-  const { portfolioData, loading } = usePortfolio();
-  
+interface SocialLinksProps {
+  data: {
+    email: string;
+    phone: string;
+    address: string;
+    github: string;
+    linkedin: string;
+    twitter: string;
+    instagram: string;
+  } | null;
+}
+
+function SocialLinks({ data }: SocialLinksProps) {
   // Use contact data if available, otherwise use empty strings
-  const github = portfolioData?.contact?.github || "";
-  const linkedin = portfolioData?.contact?.linkedin || "";
-  const twitter = portfolioData?.contact?.twitter || "";
-  const instagram = portfolioData?.contact?.instagram || "";
-  
-  if (loading) {
-    return (
-      <div className="space-y-4 animate-pulse">
-        <h2 className="text-xl font-semibold">Socials</h2>
-        <div className="flex gap-4">
-          <div className="w-10 h-10 bg-gray-700 rounded-full"></div>
-          <div className="w-10 h-10 bg-gray-700 rounded-full"></div>
-          <div className="w-10 h-10 bg-gray-700 rounded-full"></div>
-        </div>
-      </div>
-    );
-  }
+  const github = data?.github || "";
+  const linkedin = data?.linkedin || "";
+  const twitter = data?.twitter || "";
+  const instagram = data?.instagram || "";
   
   return (
     <div className="space-y-4">

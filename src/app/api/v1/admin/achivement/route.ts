@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectDb } from "@/lib/mongodb";
 import Achievement from "@/models/achievement.model";
+import { revalidateTag } from 'next/cache';
 
 // GET all achievements
 export async function GET() {
@@ -40,6 +41,9 @@ export async function POST(request: NextRequest) {
     });
 
     await newAchievement.save();
+    
+    // Revalidate cache
+    revalidateTag('portfolio', 'default');
     
     return NextResponse.json(
       { success: true, message: "Achievement created successfully", achievement: newAchievement },
@@ -86,6 +90,9 @@ export async function PUT(request: NextRequest) {
       );
     }
 
+    // Revalidate cache
+    revalidateTag('portfolio', 'default');
+
     return NextResponse.json(
       { success: true, message: "Achievement updated successfully", achievement: updatedAchievement },
       { status: 200 }
@@ -122,6 +129,9 @@ export async function DELETE(request: NextRequest) {
         { status: 404 }
       );
     }
+
+    // Revalidate cache
+    revalidateTag('portfolio', 'default');
 
     return NextResponse.json(
       { success: true, message: "Achievement deleted successfully" },

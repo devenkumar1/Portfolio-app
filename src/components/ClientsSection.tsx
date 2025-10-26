@@ -1,11 +1,8 @@
 "use client";
 import React from 'react';
 import Image from 'next/image';
-import { usePortfolio } from '@/context/PortfolioContext';
 
 function ClientsSection() {
-  const { loading } = usePortfolio();
-  
   // Client images - in a real app, these would come from the backend
   const clientImages = [
     "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1887&auto=format&fit=crop", 
@@ -13,25 +10,6 @@ function ClientsSection() {
     "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1887&auto=format&fit=crop", 
     "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1887&auto=format&fit=crop"
   ];
-  
-  if (loading) {
-    return (
-      <section className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl p-8 border border-gray-700/50 animate-pulse">
-        <div className="flex items-center gap-1 mb-4">
-          {[...Array(5)].map((_, i) => (
-            <div key={i} className="w-5 h-5 bg-gray-700 rounded-full"></div>
-          ))}
-        </div>
-        <div className="h-12 bg-gray-700 rounded w-1/4 mb-2"></div>
-        <div className="h-4 bg-gray-700 rounded w-1/2 mb-6"></div>
-        <div className="flex -space-x-3">
-          {[...Array(5)].map((_, i) => (
-            <div key={i} className="w-11 h-11 bg-gray-700 rounded-full"></div>
-          ))}
-        </div>
-      </section>
-    );
-  }
 
   return (
     <section className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl p-8 border border-gray-700/50">

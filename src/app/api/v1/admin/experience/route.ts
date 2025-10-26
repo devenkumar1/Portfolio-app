@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectDb } from "@/lib/mongodb";
 import Experience from "@/models/expirence.model";
+import { revalidateTag } from 'next/cache';
 
 // GET all experiences
 export async function GET() {
@@ -41,6 +42,9 @@ export async function POST(request: NextRequest) {
     });
 
     await newExperience.save();
+    
+    // Revalidate cache
+    revalidateTag('portfolio', 'default');
     
     return NextResponse.json(
       { success: true, message: "Experience created successfully", experience: newExperience },
@@ -88,6 +92,9 @@ export async function PUT(request: NextRequest) {
       );
     }
 
+    // Revalidate cache
+    revalidateTag('portfolio', 'default');
+
     return NextResponse.json(
       { success: true, message: "Experience updated successfully", experience: updatedExperience },
       { status: 200 }
@@ -124,6 +131,9 @@ export async function DELETE(request: NextRequest) {
         { status: 404 }
       );
     }
+
+    // Revalidate cache
+    revalidateTag('portfolio', 'default');
 
     return NextResponse.json(
       { success: true, message: "Experience deleted successfully" },

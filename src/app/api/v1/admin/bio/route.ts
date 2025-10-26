@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectDb } from "@/lib/mongodb";
 import Bio from "@/models/bio.model";
+import { revalidateTag } from 'next/cache';
 
 // GET bio information
 export async function GET() {
@@ -70,6 +71,9 @@ export async function POST(request: NextRequest) {
       await bio.save();
     }
     
+    // Revalidate cache after updating
+    revalidateTag('portfolio', 'default');
+    
     return NextResponse.json(
       { success: true, message: "Bio information saved successfully", bio },
       { status: 200 }
@@ -114,6 +118,9 @@ export async function PUT(request: NextRequest) {
       updateData,
       { new: true }
     );
+    
+    // Revalidate cache after updating
+    revalidateTag('portfolio', 'default');
     
     return NextResponse.json(
       { success: true, message: "Bio information updated successfully", bio: updatedBio },

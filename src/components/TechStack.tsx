@@ -2,32 +2,40 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
-import { usePortfolio } from "@/context/PortfolioContext";
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-function TechStack() {
-    const { portfolioData, loading } = usePortfolio();
+
+interface TechStackProps {
+  data: Array<{
+    _id: string;
+    name: string;
+    icon: string;
+  }>;
+}
+
+function TechStack({ data }: TechStackProps) {
     const stackRef = useRef<HTMLDivElement>(null);
     
     // Fallback tech stack data
     const fallbackTechStack = [
-        { name: "Figma", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" },
-        { name: "React", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" },
+        { _id: '1', name: "Figma", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" },
+        { _id: '2', name: "React", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" },
         {
+          _id: '3',
           name: "TypeScript",
           icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg",
         },
-        { name: "Tailwind", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-plain.svg" },
-        { name: "Next.js", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg" },
+        { _id: '4', name: "Tailwind", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-plain.svg" },
+        { _id: '5', name: "Next.js", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg" },
     ];
     
     // Use skills data from API if available, otherwise use fallback
-    const techStack = portfolioData?.skills?.length ? portfolioData.skills : fallbackTechStack;
+    const techStack = data?.length ? data : fallbackTechStack;
     
     useGSAP(() => {
-        if (loading || !stackRef.current) return;
+        if (!stackRef.current) return;
         gsap.registerPlugin(ScrollTrigger);
         const icons = stackRef.current.querySelectorAll('.tech-icon');
         if (icons.length === 0) return; // Check if icons exist before animating
@@ -51,28 +59,7 @@ function TechStack() {
         return () => {
             ScrollTrigger.getAll().forEach((st) => st.kill());
         };
-    }, [techStack, loading]);
-
-    if (loading) {
-        return (
-            <section id="stack" className="rounded-xl p-8 bg-gradient-to-br from-blue-600/20 to-purple-600/20 border border-blue-500/20 backdrop-blur-sm">
-                <div className="flex justify-between items-center mb-8">
-                    <h2 className="text-3xl font-mono font-bold">My Tech Stack</h2>
-                    <div className="w-24 h-10 bg-gray-700 rounded animate-pulse"></div>
-                </div>
-                <div className="flex flex-wrap gap-6 justify-center">
-                    {[1, 2, 3, 4, 5].map((item) => (
-                        <div key={item} className="flex flex-col items-center gap-2">
-                            <div className="w-16 h-16 bg-gray-700 rounded-xl animate-pulse"></div>
-                            <div className="w-16 h-4 bg-gray-700 rounded animate-pulse"></div>
-                        </div>
-                    ))}
-                </div>
-            </section>
-        );
-    }
-
-
+    }, [techStack]);
 
     return (
         <section id="stack" ref={stackRef} className="rounded-xl p-8 bg-gradient-to-br from-blue-600/20 to-purple-600/20 border border-blue-500/20 backdrop-blur-sm">

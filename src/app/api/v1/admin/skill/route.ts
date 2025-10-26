@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectDb } from "@/lib/mongodb";
 import Skills from "@/models/skills.model";
+import { revalidateTag } from 'next/cache';
 
 // GET all skills
 export async function GET() {
@@ -48,6 +49,9 @@ export async function POST(request: NextRequest) {
     });
 
     await newSkill.save();
+    
+    // Revalidate cache
+    revalidateTag('portfolio', 'default');
     
     return NextResponse.json(
       { success: true, message: "Skill created successfully", skill: newSkill },
@@ -101,6 +105,9 @@ export async function PUT(request: NextRequest) {
       );
     }
 
+    // Revalidate cache
+    revalidateTag('portfolio', 'default');
+
     return NextResponse.json(
       { success: true, message: "Skill updated successfully", skill: updatedSkill },
       { status: 200 }
@@ -137,6 +144,9 @@ export async function DELETE(request: NextRequest) {
         { status: 404 }
       );
     }
+
+    // Revalidate cache
+    revalidateTag('portfolio', 'default');
 
     return NextResponse.json(
       { success: true, message: "Skill deleted successfully" },

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectDb } from "@/lib/mongodb";
 import Certificate from "@/models/certificate.model";
+import { revalidateTag } from 'next/cache';
 
 // GET all certificates
 export async function GET() {
@@ -40,6 +41,9 @@ export async function POST(request: NextRequest) {
     });
 
     await newCertificate.save();
+    
+    // Revalidate cache
+    revalidateTag('portfolio', 'default');
     
     return NextResponse.json(
       { success: true, message: "Certificate created successfully", certificate: newCertificate },
@@ -87,6 +91,9 @@ export async function PUT(request: NextRequest) {
       );
     }
 
+    // Revalidate cache
+    revalidateTag('portfolio', 'default');
+
     return NextResponse.json(
       { success: true, message: "Certificate updated successfully", certificate: updatedCertificate },
       { status: 200 }
@@ -123,6 +130,9 @@ export async function DELETE(request: NextRequest) {
         { status: 404 }
       );
     }
+
+    // Revalidate cache
+    revalidateTag('portfolio', 'default');
 
     return NextResponse.json(
       { success: true, message: "Certificate deleted successfully" },

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectDb } from "@/lib/mongodb";
 import Project from "@/models/project.model";
+import { revalidateTag } from 'next/cache';
 
 // GET all projects
 export async function GET() {
@@ -44,6 +45,9 @@ export async function POST(request: NextRequest) {
     });
 
     await newProject.save();
+    
+    // Revalidate cache
+    revalidateTag('portfolio', 'default');
     
     return NextResponse.json(
       { success: true, message: "Project created successfully", project: newProject },
@@ -93,6 +97,9 @@ export async function PUT(request: NextRequest) {
       );
     }
 
+    // Revalidate cache
+    revalidateTag('portfolio', 'default');
+
     return NextResponse.json(
       { success: true, message: "Project updated successfully", project: updatedProject },
       { status: 200 }
@@ -129,6 +136,9 @@ export async function DELETE(request: NextRequest) {
         { status: 404 }
       );
     }
+
+    // Revalidate cache
+    revalidateTag('portfolio', 'default');
 
     return NextResponse.json(
       { success: true, message: "Project deleted successfully" },

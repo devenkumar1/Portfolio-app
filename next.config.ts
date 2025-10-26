@@ -28,8 +28,29 @@ const config: NextConfig = {
         hostname: 'cdn.jsdelivr.net',
         pathname: '/**',
       }
+    ],
+    formats: ['image/avif', 'image/webp'],
+    minimumCacheTTL: 31536000,
+  },
+  // Add headers for better SEO and security
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          {
+            key: 'X-DNS-Prefetch-Control',
+            value: 'on'
+          },
+          {
+            key: 'X-Frame-Options',
+            value: 'SAMEORIGIN'
+          },
+        ],
+      },
     ]
-  }
+  },
+
 };
 
 export default config;
