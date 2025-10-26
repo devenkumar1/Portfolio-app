@@ -46,7 +46,8 @@
     "app/api/(user)/mentor/chat/allchats/route.ts",
     "components/UserProfile/UserProfile.jsx",
     ".next\\dev/types/**/*.ts",
-    ".next\\dev/types/**/*.ts"
+    ".next\\dev/types/**/*.ts",
+    ".next/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules",

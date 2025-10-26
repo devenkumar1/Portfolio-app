@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectDb } from "@/lib/mongodb";
 import Contact from "@/models/contact.model";
+import { revalidateTag } from 'next/cache';
 
 // GET contact information
 export async function GET() {
@@ -74,6 +75,9 @@ export async function POST(request: NextRequest) {
       await contact.save();
     }
     
+    // Revalidate cache
+    revalidateTag('portfolio', 'default');
+    
     return NextResponse.json(
       { success: true, message: "Contact information saved successfully", contact },
       { status: 200 }
@@ -120,6 +124,9 @@ export async function PUT(request: NextRequest) {
       updateData,
       { new: true }
     );
+    
+    // Revalidate cache
+    revalidateTag('portfolio', 'default');
     
     return NextResponse.json(
       { success: true, message: "Contact information updated successfully", contact: updatedContact },

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectDb } from "@/lib/mongodb";
 import Education from "@/models/education.model";
+import { revalidateTag } from 'next/cache';
 
 // GET all education entries
 export async function GET() {
@@ -49,6 +50,9 @@ export async function POST(request: NextRequest) {
     });
 
     await newEducation.save();
+    
+    // Revalidate cache
+    revalidateTag('portfolio', 'default');
     
     return NextResponse.json(
       { success: true, message: "Education entry created successfully", education: newEducation },
@@ -104,6 +108,9 @@ export async function PUT(request: NextRequest) {
       );
     }
 
+    // Revalidate cache
+    revalidateTag('portfolio', 'default');
+
     return NextResponse.json(
       { success: true, message: "Education entry updated successfully", education: updatedEducation },
       { status: 200 }
@@ -140,6 +147,9 @@ export async function DELETE(request: NextRequest) {
         { status: 404 }
       );
     }
+
+    // Revalidate cache
+    revalidateTag('portfolio', 'default');
 
     return NextResponse.json(
       { success: true, message: "Education entry deleted successfully" },

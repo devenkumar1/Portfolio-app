@@ -2,13 +2,22 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Mail } from 'lucide-react';
-import { usePortfolio } from '@/context/PortfolioContext';
 import ContactForm from './ContactForm';
 
-export default function ContactSection() {
-    const { portfolioData } = usePortfolio();
+interface ContactSectionProps {
+  data: {
+    email: string;
+    phone: string;
+    address: string;
+    github: string;
+    linkedin: string;
+    twitter: string;
+    instagram: string;
+  } | null;
+}
 
-    const email = portfolioData?.contact?.email || 'contact@example.com';
+export default function ContactSection({ data }: ContactSectionProps) {
+    const email = data?.email || 'contact@example.com';
     
     const handleContactClick = () => {
         window.location.href = `mailto:${email}`;

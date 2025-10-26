@@ -2,41 +2,64 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ExternalLink, Github } from "lucide-react";
-import { usePortfolio } from "@/context/PortfolioContext";
 import Link from "next/link";
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-export default function ProjectsSection() {
-    const { portfolioData, loading } = usePortfolio();
+interface ProjectsSectionProps {
+  data: Array<{
+    _id: string;
+    title: string;
+    category: string;
+    descrition: string;
+    image: string;
+    timestamp: string;
+    github: string | null;
+    live: string | null;
+  }>;
+}
+
+export default function ProjectsSection({ data }: ProjectsSectionProps) {
     const projectsRef = useRef<HTMLDivElement>(null);
     
     // Fallback projects data
     const fallbackProjects = [
         {
-          id: 1,
+          _id: '1',
           title: "E-Commerce Redesign",
           category: "UX/UI Design",
+          descrition: "Modern e-commerce platform redesign",
           image: "https://images.unsplash.com/photo-1531403009284-440f080d1e12?q=80&w=2070&auto=format&fit=crop",
+          timestamp: new Date().toISOString(),
+          github: null,
+          live: null,
         },
         {
-          id: 2,
+          _id: '2',
           title: "Finance Dashboard",
           category: "Web Application",
+          descrition: "Comprehensive finance dashboard application",
           image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop",
+          timestamp: new Date().toISOString(),
+          github: null,
+          live: null,
         },
         {
-          id: 3,
+          _id: '3',
           title: "Travel App",
           category: "Mobile Design",
+          descrition: "Intuitive travel planning application",
           image: "https://images.unsplash.com/photo-1551503766-ac63dfa6401c?q=80&w=2070&auto=format&fit=crop",
+          timestamp: new Date().toISOString(),
+          github: null,
+          live: null,
         },
     ];
     
     // Use projects data from API if available, otherwise use fallback
-    const allProjects = portfolioData?.projects?.length ? portfolioData.projects : fallbackProjects;
+    const allProjects = data?.length ? data : fallbackProjects;
     
     // Get only the latest 3 projects for the home page
     const featuredProjects = allProjects.slice(0, 3);
@@ -45,7 +68,7 @@ export default function ProjectsSection() {
     const hasMoreProjects = allProjects.length > 3;
     
     useGSAP(() => {
-        if (loading || !projectsRef.current) return;
+        if (!projectsRef.current) return;
         gsap.registerPlugin(ScrollTrigger);
         const cards = projectsRef.current.querySelectorAll('.project-card');
         if (cards.length === 0) return; // Fixed: Check if cards exist before animating
@@ -69,23 +92,7 @@ export default function ProjectsSection() {
         return () => {
             ScrollTrigger.getAll().forEach((st) => st.kill());
         };
-    }, [featuredProjects, loading]);
-    
-    if (loading) {
-        return (
-            <section id="projects" ref={projectsRef} className="space-y-8">
-                <div className="flex justify-between items-center">
-                    <h2 className="text-3xl font-mono font-bold">Featured Projects</h2>
-                    <div className="w-24 h-10 bg-gray-700 rounded animate-pulse"></div>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {[1, 2, 3].map((item) => (
-                        <div key={item} className="aspect-[4/5] rounded-xl bg-gray-700 animate-pulse"></div>
-                    ))}
-                </div>
-            </section>
-        );
-    }
+    }, [featuredProjects]);
     
     return (
         <section id="projects" ref={projectsRef} className="space-y-8">
@@ -101,8 +108,8 @@ export default function ProjectsSection() {
                 )}
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {featuredProjects.map((project: any) => (
-                    <div key={project._id || project.id} className="project-card group relative aspect-[4/5] rounded-xl overflow-hidden cursor-pointer">
+                {featuredProjects.map((project) => (
+                    <div key={project._id} className="project-card group relative aspect-[4/5] rounded-xl overflow-hidden cursor-pointer">
                         <Image
                             src={project.image || "/placeholder.svg"}
                             alt={project.title}

@@ -5,19 +5,19 @@ import Link from "next/link"
 import { Menu, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
-import { usePortfolio } from "@/context/PortfolioContext"
 import gsap from "gsap"
 import {useGSAP} from '@gsap/react'
 
+interface NavBarProps {
+  name?: string;
+}
 
-
-function NavBar() {
-    const { portfolioData } = usePortfolio();
+function NavBar({ name: propName }: NavBarProps = {}) {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false)
     
-    // Get name from bio data if available
-    const name = portfolioData?.bio?.name?.split(' ')[0] || "Deven";
+    // Use prop name or fallback
+    const name = propName?.split(' ')[0] || "Deven";
     const initial = name.charAt(0);
   const logoDiv = useRef(null);
   const navLinks = useRef<HTMLDivElement>(null);
@@ -68,9 +68,16 @@ useGSAP(() => {
 
     const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, sectionId: string) => {
         e.preventDefault();
-        const element = document.querySelector(sectionId);
-        element?.scrollIntoView({ behavior: 'smooth' });
         setMobileMenuOpen(false);
+        
+        // Check if we're on the homepage
+        if (window.location.pathname === '/') {
+            const element = document.querySelector(sectionId);
+            element?.scrollIntoView({ behavior: 'smooth' });
+        } else {
+            // Navigate to homepage with hash
+            window.location.href = `/${sectionId}`;
+        }
     };
 
   return (

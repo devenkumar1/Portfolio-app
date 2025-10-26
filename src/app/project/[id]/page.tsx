@@ -1,72 +1,52 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ExternalLink, Github, Calendar, Tag } from "lucide-react";
-import { usePortfolio } from "@/context/PortfolioContext";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { notFound } from "next/navigation";
+import { getPortfolioData } from "@/lib/portfolio-data";
+import type { Metadata } from "next";
 
-export default function ProjectDetailPage() {
-  const { id } = useParams();
-  const { portfolioData, loading } = usePortfolio();
-  const [project, setProject] = useState<any>(null);
-  
-  useEffect(() => {
-    if (portfolioData?.projects) {
-      const foundProject = portfolioData.projects.find((p: any) => p._id === id);
-      setProject(foundProject || null);
-    }
-  }, [portfolioData, id]);
-  
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 text-white">
-        <div className="container mx-auto px-6 pt-32 pb-20">
-          <div className="flex items-center mb-8">
-            <div className="w-10 h-10 bg-gray-700 rounded-full animate-pulse"></div>
-            <div className="h-8 w-40 bg-gray-700 rounded ml-4 animate-pulse"></div>
-          </div>
-          
-          <div className="w-full h-[400px] rounded-xl bg-gray-700 animate-pulse mb-8"></div>
-          
-          <div className="space-y-4">
-            <div className="h-8 w-3/4 bg-gray-700 rounded animate-pulse"></div>
-            <div className="h-4 w-1/4 bg-gray-700 rounded animate-pulse"></div>
-            <div className="h-4 w-full bg-gray-700 rounded animate-pulse"></div>
-            <div className="h-4 w-full bg-gray-700 rounded animate-pulse"></div>
-            <div className="h-4 w-3/4 bg-gray-700 rounded animate-pulse"></div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+interface ProjectPageProps {
+  params: {
+    id: string;
+  };
+}
+
+export async function generateMetadata({ params }: ProjectPageProps): Promise<Metadata> {
+  const portfolioData = await getPortfolioData();
+  const project = portfolioData?.projects?.find((p: any) => p._id === params.id);
   
   if (!project) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 text-white">
-        <div className="container mx-auto px-6 pt-32 pb-20">
-          <div className="flex items-center mb-8">
-            <Link href="/all-projects">
-              <Button variant="ghost" size="icon" className="mr-4">
-                <ArrowLeft className="w-5 h-5" />
-              </Button>
-            </Link>
-            <h1 className="text-3xl font-bold">Project Not Found</h1>
-          </div>
-          
-          <div className="text-center py-12">
-            <p className="text-gray-400">The project you're looking for doesn't exist or has been removed.</p>
-            <Link href="/all-projects">
-              <Button className="mt-4">
-                Back to All Projects
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </div>
-    );
+    return {
+      title: "Project Not Found - Portfolio",
+      description: "The requested project could not be found.",
+    };
+  }
+  
+  return {
+    title: `${project.title} - Project Details | Deven Kumar Portfolio`,
+    description: project.descrition || `View details about ${project.title} project by Deven Kumar`,
+    openGraph: {
+      title: project.title,
+      description: project.descrition,
+      images: project.image ? [{ url: project.image }] : [],
+      type: "article",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: project.title,
+      description: project.descrition,
+      images: project.image ? [project.image] : [],
+    },
+  };
+}
+
+export default async function ProjectDetailPage({ params }: ProjectPageProps) {
+  const portfolioData = await getPortfolioData();
+  const project = portfolioData?.projects?.find((p: any) => p._id === params.id);
+  
+  if (!project) {
+    notFound();
   }
   
   return (

@@ -1,21 +1,30 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-
+// import devenImage from "@/assets/deven-picture.png"
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from "lucide-react";
-import { usePortfolio } from "@/context/PortfolioContext";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 
-function HeroSection() {
-    const { portfolioData, loading } = usePortfolio();
+interface HeroSectionProps {
+  data: {
+    name: string;
+    title: string;
+    description: string;
+    image: string;
+    resume: string;
+  } | null;
+}
+
+function HeroSection({ data }: HeroSectionProps) {
     const nameRef = useRef<HTMLDivElement>(null)
 
     const textArray = [
+        "A passionate Software developer.",
         "A web solution provider",
         "A problem solver.",
-        "A passionate learner.",
+        "A learner.",
     ];
     const [text, setText] = useState("");
     const [index, setIndex] = useState(0);
@@ -28,7 +37,7 @@ function HeroSection() {
 
     useEffect(() => {
 
-        if (nameRef.current && !loading) {
+        if (nameRef.current) {
             tl.from(nameRef.current.querySelectorAll('h3'), {
                 scale: 0,
                 x: -40,
@@ -64,7 +73,7 @@ function HeroSection() {
             })
 
         }
-    }, [loading]);
+    }, []);
 
     useEffect(() => {
         const timeout = setTimeout(() => {
@@ -85,35 +94,16 @@ function HeroSection() {
         return () => clearTimeout(timeout);
     }, [text, isDeleting, charIndex, index]);
 
-    const name = portfolioData?.bio?.name || "Deven Kumar";
-    const title = portfolioData?.bio?.title || "Full Stack Developer";
-    const profileImage = portfolioData?.bio?.image 
-    const resumeUrl = portfolioData?.bio?.resume || "";
+    const name = data?.name || "Deven Kumar";
+    const title = data?.title || "Full Stack Developer";
+    const profileImage = data?.image 
+    const resumeUrl = data?.resume || "";
 
     const handleResumeDownload = () => {
         if (resumeUrl) {
             window.open(resumeUrl, '_blank');
         }
     };
-
-    if (loading) {
-        return (
-            <div className="w-full min-h-[80vh] text-white flex justify-center items-center animate-pulse">
-                <div className="max-w-6xl w-full flex flex-col-reverse gap-5 md:flex-row md:justify-around items-center">
-                    <div className="text-center md:text-left w-full md:w-1/2">
-                        <div className="h-6 bg-gray-700 rounded w-1/2 mb-4"></div>
-                        <div className="h-10 bg-gray-700 rounded w-3/4 mb-4"></div>
-                        <div className="h-8 bg-gray-700 rounded w-2/3 mb-6"></div>
-                        <div className="h-6 bg-gray-700 rounded w-1/2 mb-4"></div>
-                        <div className="h-10 bg-gray-700 rounded w-1/3"></div>
-                    </div>
-                    <div className="mt-8 md:mt-0 md:w-1/2 flex justify-center">
-                        <div className="w-[300px] h-[300px] md:w-[400px] md:h-[400px] bg-gray-700 rounded-lg"></div>
-                    </div>
-                </div>
-            </div>
-        );
-    }
 
     return (
         <div className="w-full min-h-[80vh] text-white flex justify-center items-center" id="home">
@@ -151,11 +141,13 @@ function HeroSection() {
                         {/* Profile Image */}
                         <Image
 
-                            src={typeof profileImage === 'string' ? profileImage : devenImage}
+                            src={profileImage? profileImage:  "" }
                             alt={name}
                             width={500}
                             height={500}
-                            loading="lazy"
+                            priority
+                            // loading={lazy}
+                            sizes="(max-width: 768px) 100vw, 500px"
                             className="rounded-lg shadow-lg transition-all duration-300  mb-8 md:mb-0 group-hover:scale-105 h-60  md:mt-3 md:w-[500px] md:h-[500px] object-cover"
                             style={{
                                 boxShadow: `

@@ -1,24 +1,32 @@
 "use client";
 
-import { usePortfolio } from "@/context/PortfolioContext";
 import { GraduationCap, Calendar } from "lucide-react";
 import { useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 
-export default function EducationTimeline() {
-  const { portfolioData, loading } = usePortfolio();
+interface EducationTimelineProps {
+  data: Array<{
+    _id: string;
+    course: string;
+    start: string;
+    end: string;
+    percentage: number;
+  }>;
+}
+
+export default function EducationTimeline({ data }: EducationTimelineProps) {
   const timelineRef = useRef<HTMLDivElement>(null);
   
-  const educations = [...(portfolioData?.educations || [])].sort((a, b) => {
+  const educations = [...(data || [])].sort((a, b) => {
     const startA = parseInt(a.start);
     const startB = parseInt(b.start);
     return startB - startA;
   });
 
   useGSAP(() => {
-    if (loading || !timelineRef.current || educations.length === 0) return;
+    if (!timelineRef.current || educations.length === 0) return;
     gsap.registerPlugin(ScrollTrigger);
     const items = timelineRef.current.querySelectorAll(".education-item");
     if (items.length === 0) return;
@@ -43,27 +51,7 @@ export default function EducationTimeline() {
     return () => {
       ScrollTrigger.getAll().forEach((st) => st.kill());
     };
-  }, [educations, loading]);
-
-  if (loading) {
-    return (
-      <div className="space-y-8 animate-pulse">
-        <h2 className="text-3xl font-bold">Education</h2>
-        <div className="space-y-8">
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="flex gap-4">
-              <div className="w-12 h-12 bg-gray-700 rounded-full"></div>
-              <div className="flex-1 space-y-2">
-                <div className="h-6 bg-gray-700 rounded w-3/4"></div>
-                <div className="h-4 bg-gray-700 rounded w-1/2"></div>
-                <div className="h-4 bg-gray-700 rounded w-1/4"></div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  }
+  }, [educations]);
 
   return (
     <div ref={timelineRef} className="space-y-8" id="education">
@@ -76,7 +64,7 @@ export default function EducationTimeline() {
           {/* Vertical line */}
           <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-blue-500 to-purple-600"></div>
           
-          {educations.map((education: any, index: number) => (
+          {educations.map((education) => (
             <div key={education._id} className="education-item relative flex gap-6">
               {/* Timeline dot */}
               <div className="absolute left-0 w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg">

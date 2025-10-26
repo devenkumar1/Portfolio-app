@@ -1,26 +1,22 @@
 "use client";
 import { Mail, Phone, MapPin } from "lucide-react";
-import { usePortfolio } from "@/context/PortfolioContext";
 
-function ContactInfo() {
-  const { portfolioData, loading } = usePortfolio();
-  
-  const email = portfolioData?.contact?.email || "devenkumar540@gmail.com";
-  const phone = portfolioData?.contact?.phone || "+91 9693838648";
-  const address = portfolioData?.contact?.address || "Arrah,Bihar";
-  
-  if (loading) {
-    return (
-      <div className="space-y-4 animate-pulse">
-        <h2 className="text-xl font-semibold">Let's Connect</h2>
-        <div className="flex flex-col space-y-3">
-          <div className="h-6 bg-gray-700 rounded w-3/4"></div>
-          <div className="h-6 bg-gray-700 rounded w-2/3"></div>
-          {address && <div className="h-6 bg-gray-700 rounded w-full"></div>}
-        </div>
-      </div>
-    );
-  }
+interface ContactInfoProps {
+  data: {
+    email: string;
+    phone: string;
+    address: string;
+    github: string;
+    linkedin: string;
+    twitter: string;
+    instagram: string;
+  } | null;
+}
+
+function ContactInfo({ data }: ContactInfoProps) {
+  const email = data?.email || "devenkumar540@gmail.com";
+  const phone = data?.phone || "+91 9693838648";
+  const address = data?.address || "Arrah,Bihar";
   
   return (
     <div className="space-y-4">
