@@ -35,9 +35,13 @@ export default function ContactSection() {
                     >
                         Email Me Directly <Mail className="ml-2 w-4 h-4" />
                     </Button>
+              
+
                 </div>
                 
                 <ContactForm />
+                
+              
             </div>
         </section>
     );

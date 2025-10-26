@@ -21,7 +21,7 @@ export default function EducationTimeline() {
     if (loading || !timelineRef.current || educations.length === 0) return;
     gsap.registerPlugin(ScrollTrigger);
     const items = timelineRef.current.querySelectorAll(".education-item");
-    if (items.length === 0) return; // Fixed: Check if items exist before animating
+    if (items.length === 0) return;
     items.forEach((item) => {
       gsap.fromTo(
         item,

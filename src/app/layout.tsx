@@ -42,6 +42,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} antialiased ${inter.className}`}>
+     
       <body>
         <SessionProvider>
           <PortfolioProvider>
@@ -65,6 +66,7 @@ export default function RootLayout({
             }
           `}
         </Script>
+        <Script src="https://platform.linkedin.com/badges/js/profile.js" async defer type="text/javascript"></Script>
       </body>
     </html>
   );

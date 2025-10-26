@@ -15,10 +15,9 @@ export async function sendMailToDeveloper(senderName:string,senderMail:string,ti
         throw Error("All fields are required");
     }
     
-    // Resend requires a verified domain for the 'from' field
-    // Use your verified domain instead of the sender's email
+
     await resend.emails.send({
-        from: 'onboarding@resend.dev', // Use Resend's default sending domain
+        from: 'onboarding@resend.dev', 
         to: userEmail,
         subject: title,
         html: `
@@ -28,6 +27,6 @@ export async function sendMailToDeveloper(senderName:string,senderMail:string,ti
             <p><strong>Message:</strong></p>
             <p>${message}</p>
         `,
-        replyTo: senderMail // This allows you to reply directly to the sender
+        replyTo: senderMail
     });
 }

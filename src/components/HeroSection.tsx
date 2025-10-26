@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import devenImage from "@/assets/deven-picture.png"
+
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from "lucide-react";
 import { usePortfolio } from "@/context/PortfolioContext";
@@ -87,7 +87,7 @@ function HeroSection() {
 
     const name = portfolioData?.bio?.name || "Deven Kumar";
     const title = portfolioData?.bio?.title || "Full Stack Developer";
-    const profileImage = portfolioData?.bio?.image || devenImage;
+    const profileImage = portfolioData?.bio?.image 
     const resumeUrl = portfolioData?.bio?.resume || "";
 
     const handleResumeDownload = () => {

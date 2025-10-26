@@ -38,6 +38,7 @@ function ContactInfo() {
           </div>
         )}
       </div>
+
     </div>
   );
 }
