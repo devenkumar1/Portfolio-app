@@ -53,7 +53,7 @@ export const metadata: Metadata = {
     apple: "/icons/icon-192x192.png",
   },
   verification: {
-    google: 'your-google-verification-code', // Add your Google Search Console verification
+    google: 'iI3hfk9EtSSqdV4INaclUSHASYQ1psn8Xx0UoeRlJk0', // Google Search Console verification
   },
 };
 
